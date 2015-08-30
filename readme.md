@@ -1,12 +1,21 @@
-The script minimizes/maximizes windows, based on the following algorithm:
-* A search is initiated for a certain window class
-* If a single instance of the window class exists, it's minimize/maximize state is toggled
-* If multiple instances of the window class exist, on each run the script switches between them
-* If the window class isn't matched, an attempt is made to launch it (see bellow)
+# wintoggle
 
-CLI parameters:
-* Parameter 1: Window class; Parameter 2: Bin executable (optional)
-* Parameter 2 is launched if the window class is not detected
-  If omitted, the script attempt to launch the program using it's class name
+A simple window focus toggler. Useful in conjunction with global hotkeys.
 
-I find the script very useful in conjunction with global hotkeys
+The program works in the following fashion:
+
+* [Stage 1]: The currently focused mapped window (and all its mapped parents) are matched against a class name. If any of them matches, the window is minimized and the program terminates. Otherwise the program proceeds to Stage 2.
+
+* [Stage 2]: All mapped windows on the current display are scanned. The first window that matches is maximized. If nothing is matched, the program proceeds to Stage 3
+
+* [Stage 3]: An attempt is made to launch the executable that is supposed to have the specified window class name.
+
+CLI arguments:
+
+```
+wintoggle (class) [executable] [-h/--help]
+
+* class: The window class to match
+* executable (optional): The executable to launch on failure. If it is omitted, the class name is used
+* -h / --help: Display this message
+```

@@ -1,0 +1,12 @@
+{
+    "name": "wintoggle",
+    "description": "A minimal D application.",
+    "copyright": "Copyright © 2015, ianis",
+    "authors": ["ianis"],
+    "dependencies": {
+        "x11": "~>1.0.8"
+    },
+    "stringImportPaths": [
+        "."
+    ]
+}
