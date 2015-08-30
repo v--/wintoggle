@@ -18,8 +18,9 @@ void main(string[] args)
     if (args.length < 2 || args.length > 3)
         displayHelp();
 
-    className = args[2];
-    executable = args[args.length == 3 ? 3 : 2];
+    writeln(args);
+    className = args[1];
+    executable = args[$ - 1];
 
     match = checkActiveHierarchy(className);
 
