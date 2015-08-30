@@ -1,8 +1,9 @@
 {
     "name": "wintoggle",
-    "description": "A minimal D application.",
+    "description": "A simple window focus toggler",
     "copyright": "Copyright © 2015, ianis",
     "authors": ["ianis"],
+    "license": "BSL-1.0",
     "dependencies": {
         "x11": "~>1.0.8"
     },

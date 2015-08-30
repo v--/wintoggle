@@ -18,7 +18,6 @@ void main(string[] args)
     if (args.length < 2 || args.length > 3)
         displayHelp();
 
-    writeln(args);
     className = args[1];
     executable = args[$ - 1];
 

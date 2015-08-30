@@ -108,7 +108,7 @@ int getScreen(Window window)
 
 bool windowMatches(Window window, string className)
 {
-    return getClassName(window) == className && isMapped(window);
+    return getClassName(window) == className && hasDesktop(window);
 }
 
 int errorHandler(XErrorEvent* err)
@@ -120,11 +120,34 @@ int errorHandler(XErrorEvent* err)
     return 0;
 }
 
-bool isMapped(Window window)
+bool hasDesktop(Window window)
 {
-    XWindowAttributes attrs;
-    XGetWindowAttributes(display, window, &attrs);
-    return attrs.map_state != IsUnmapped;
+    bool result;
+    Atom atom = XInternAtom(display, "_NET_WM_DESKTOP", false),
+         actualType; // not actually used
+
+    int actualFormat; // not actually used
+    ulong nItems, bytesAfter; // not actually used
+    ubyte* prop; // not actually used
+
+    XGetWindowProperty(display,
+                       window,
+                       atom,
+                       0,
+                       ushort.max,
+                       false,
+                       AnyPropertyType,
+                       &actualType,
+                       &actualFormat,
+                       &nItems,
+                       &bytesAfter,
+                       &prop
+   );
+
+    result = prop !is null;
+    XFree(prop);
+
+    return result;
 }
 
 string getClassName(Window window)

@@ -1,4 +1,4 @@
-public import std.stdio: writeln, writefln;
+public import std.stdio: writefln;
 import std.c.stdlib: exit;
 import std.process;
 import std.string;
