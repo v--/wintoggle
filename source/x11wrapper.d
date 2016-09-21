@@ -3,7 +3,10 @@ import std.conv;
 import x11.X;
 import x11.Xlib;
 import x11.Xutil;
+import std.string : toStringz, fromStringz;
 import utils;
+
+enum SOURCE_INDICATION = 2L; // Pager
 
 struct WindowMatch
 {
@@ -56,18 +59,24 @@ void minimizeWindow(WindowMatch match)
     XSync(display, match.screen);
 }
 
-// This function is taken from https://github.com/jordansissel/xdotool
 void focusWindow(WindowMatch match)
+{
+    sendEvent(match, "_NET_ACTIVE_WINDOW", [SOURCE_INDICATION, CurrentTime]);
+    sendEvent(match, "_NET_WM_CURRENT_DESKTOP", [getActiveDesktop(), SOURCE_INDICATION]);
+}
+
+private:
+
+void sendEvent(WindowMatch match, string messageType, long[] data)
 {
     XEvent event;
 
     event.type = ClientMessage;
     event.xclient.display = display;
     event.xclient.window = match.window;
-    event.xclient.message_type = XInternAtom(display, "_NET_ACTIVE_WINDOW", false);
+    event.xclient.message_type = XInternAtom(display, messageType.toStringz, false);
     event.xclient.format = 32;
-    event.xclient.data.l[0] = 2L; /* 2 == Message from a window pager */
-    event.xclient.data.l[1] = CurrentTime;
+    event.xclient.data.l[0..data.length] = data[];
 
     XSendEvent(
         display,
@@ -79,8 +88,6 @@ void focusWindow(WindowMatch match)
 
     XSync(display, match.screen);
 }
-
-private:
 
 Display* display;
 
@@ -108,7 +115,7 @@ int getScreen(Window window)
 
 bool windowMatches(Window window, string className)
 {
-    return getClassName(window) == className && hasDesktop(window);
+    return getClassName(window) == className && ~getDesktop(window);
 }
 
 int errorHandler(XErrorEvent* err)
@@ -120,33 +127,48 @@ int errorHandler(XErrorEvent* err)
     return 0;
 }
 
-bool hasDesktop(Window window)
+long getDesktop(Window window)
 {
-    bool result;
-    Atom atom = XInternAtom(display, "_NET_WM_DESKTOP", false),
-         actualType; // not actually used
+    return getWindowProperty(window, "_NET_WM_DESKTOP");
+}
 
-    int actualFormat; // not actually used
-    ulong nItems, bytesAfter; // not actually used
-    ubyte* prop; // not actually used
+long getActiveDesktop()
+{
+    // The the active desktop for the first screen
+    return getWindowProperty(RootWindow(display, 0), "_NET_WM_CURRENT_DESKTOP");
+}
 
-    XGetWindowProperty(display,
-                       window,
-                       atom,
-                       0,
-                       ushort.max,
-                       false,
-                       AnyPropertyType,
-                       &actualType,
-                       &actualFormat,
-                       &nItems,
-                       &bytesAfter,
-                       &prop
-   );
+long getWindowProperty(Window window, string property)
+{
+    long result;
+    Atom atom = XInternAtom(display, property.toStringz, false);
+    Atom actualType;
 
-    result = prop !is null;
+    int actualFormat;
+    ulong nItems, bytesAfter;
+    ubyte* prop;
+
+    XGetWindowProperty(
+        display,
+        window,
+        atom,
+        0,
+        ushort.max,
+        false,
+        AnyPropertyType,
+        &actualType,
+        &actualFormat,
+        &nItems,
+        &bytesAfter,
+        &prop
+    );
+
+    if (prop is null) {
+        return -1;
+    }
+
+    result = *cast(uint*)prop;
     XFree(prop);
-
     return result;
 }
 

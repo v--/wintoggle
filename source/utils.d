@@ -1,5 +1,5 @@
 public import std.stdio: writefln;
-import std.c.stdlib: exit;
+import core.stdc.stdlib: exit;
 import std.process;
 import std.string;
 import utils;

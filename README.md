@@ -2,7 +2,7 @@
 
 A simple window focus toggler. Useful in conjunction with global hotkeys.
 
-___Warning:___ This has been tested on KDE 4.* only. It is not likely to work on X sessions without virtual desktop support ("_NET_CURRENT_DESKTOP" support is required)
+___Warning:___ Although this should work on all sane WMs, it may not. The code is lame, mostly because of my superficial understanding of Xlib.
 
 The program works in the following fashion:
 
