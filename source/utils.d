@@ -7,7 +7,7 @@ import utils;
 void displayHelp()
 {
     import std.stdio: write;
-    write(import ("readme.md"));
+    write(import ("README.md"));
     exit(0);
 }
 
