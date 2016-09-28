@@ -1,0 +1,8 @@
+ccflags = -Wall -lX11
+
+rule cc
+    command = cc $ccflags $in --output $out
+
+build wintoggle: cc wintoggle.c
+
+default wintoggle
