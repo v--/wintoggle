@@ -3,7 +3,7 @@ wintoggle(1) -- a simple window focus toggler
 
 ## SYNOPSIS
 
-`wintoggle` [--help] <var>class</var> <var>executable</var>
+`wintoggle` [--help] <class> <executable>
 
 ## DESCRIPTION
 
@@ -11,9 +11,9 @@ A simple window focus toggler. Useful in conjunction with global hotkeys. It req
 
 The program works in three steps and each one is executed only if the previous steps fail.
 
-* __Step 1__: If the currently active window has a class name (actually WM_CLASS instance name) that equals <var>class</var>, the window is minimized.
-* __Step 2__: If any window on the current display (from any screen or workspace) matches <var>class</var>, the window is moved to the current workspace and active.
-* __Step 3__: <var>executable</var>, which defaults to <var>class</var> if not specified, is executed using `execlp`.
+* __Step 1__: If the currently active window has a class name (actually WM_CLASS instance name) that equals <class>, the window is minimized.
+* __Step 2__: If any window on the current display (from any screen or workspace) matches <class>, the window is moved to the current workspace and active.
+* __Step 3__: <executable>, which defaults to <class> if not specified, is executed using `execlp`.
 
 ## EXAMPLES
 
@@ -42,12 +42,3 @@ Move `xterm` from another workspace and focus it
 
  * `-v`, `--version`:
     Print the program version and exit.
-
-
-[SYNOPSIS]: #SYNOPSIS "SYNOPSIS"
-[DESCRIPTION]: #DESCRIPTION "DESCRIPTION"
-[EXAMPLES]: #EXAMPLES "EXAMPLES"
-[OPTIONS]: #OPTIONS "OPTIONS"
-
-
-[-]: -.html

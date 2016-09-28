@@ -1,0 +1,83 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "WINTOGGLE" "1" "September 2016" "" ""
+.
+.SH "NAME"
+\fBwintoggle\fR \- a simple window focus toggler
+.
+.SH "SYNOPSIS"
+\fBwintoggle\fR [\-\-help] \fIclass\fR \fIexecutable\fR
+.
+.SH "DESCRIPTION"
+A simple window focus toggler\. Useful in conjunction with global hotkeys\. It requires a window manager with EWMH support and is tested on OpenBox, KWin, Mutter and XFWM\.
+.
+.P
+The program works in three steps and each one is executed only if the previous steps fail\.
+.
+.IP "\(bu" 4
+\fBStep 1\fR: If the currently active window has a class name (actually WM_CLASS instance name) that equals \fIclass\fR, the window is minimized\.
+.
+.IP "\(bu" 4
+\fBStep 2\fR: If any window on the current display (from any screen or workspace) matches \fIclass\fR, the window is moved to the current workspace and active\.
+.
+.IP "\(bu" 4
+\fBStep 3\fR: \fIexecutable\fR, which defaults to \fIclass\fR if not specified, is executed using \fBexeclp\fR\.
+.
+.IP "" 0
+.
+.SH "EXAMPLES"
+Launch \fBxterm\fR if it is not already running
+.
+.IP "" 4
+.
+.nf
+
+$ wintoggle xterm
+[Step 1] The active window does not match class \'xterm\'\.
+[Step 2] The currently mapped windows do not match class \'xterm\'\.
+[Step 3] Executing \'xterm\'\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Minimize \fBxterm\fR from inside xterm
+.
+.IP "" 4
+.
+.nf
+
+$ wintoggle xterm
+[Step 1] Minimizing window 14680086 (xterm)\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+Move \fBxterm\fR from another workspace and focus it
+.
+.IP "" 4
+.
+.nf
+
+$ wintoggle xterm
+[Step 1] The active window does not match class \'xterm\'\.
+[Step 2] Presenting window 14680086 (xterm) to the current workspace\.
+.
+.fi
+.
+.IP "" 0
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+List available options and exit\.
+.
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+Print the program version and exit\.
+

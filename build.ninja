@@ -1,8 +1,18 @@
 ccflags = -Wall -lX11
 
+rule ronn2md
+    command = cat $in | ronn --pipe --markdown > $out
+
+rule ronn2troff
+    command = cat $in | ronn --pipe --roff > $out
+
 rule cc
     command = cc $ccflags $in --output $out
 
+build README.md: ronn2md man/wintoggle.1.ronn
+
+build man/wintoggle.1: ronn2troff man/wintoggle.1.ronn
+
 build wintoggle: cc wintoggle.c
 
-default wintoggle
+default wintoggle README.md man/wintoggle.1
