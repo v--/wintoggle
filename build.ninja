@@ -1,4 +1,4 @@
-ccflags = -Wall -lX11
+ccflags = -O3 -Wall -lX11
 
 rule ronn2md
     command = cat $in | ronn --pipe --markdown > $out
