@@ -6,7 +6,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
-#define WT_VERSION "3.0.0"
+#define WT_VERSION "3.0.1"
 
 #define WT_HELP_MESSAGE "\
 This is a short usage summary. See wintoggle(1) for more information. \n\
@@ -380,7 +380,7 @@ main(int argc, const char** argv)
         // The initial implementation compared the active window class name with the class_name param
         // but sometimes, after closing the last window, OpenBox did not update _NET_SHOWING_DESKTOP
         // but left the root window with an invalid _NET_ACTIVE_WINDOW.
-        if (match.window == active_window_id)
+        if (match.window > 0 && match.window == active_window_id)
         {
             WTWindowInfo active_info = wt_active_window_info(display, &class_name_buffer);
             printf("[Step 1] Minimizing window %lu (%s).\n", active_info.window, active_info.class_name);
