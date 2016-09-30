@@ -1,4 +1,4 @@
-ccflags = -Wall -lX11
+ccflags = -std=c99 -O3 -Wall -Wextra
 
 rule ronn2md
     command = cat $in | ronn --pipe --markdown > $out
@@ -6,13 +6,14 @@ rule ronn2md
 rule ronn2troff
     command = cat $in | ronn --pipe --roff > $out
 
-rule cc
-    command = cc $ccflags $in --output $out
+rule xlibcc
+    command = cc $ccflags `pkg-config --cflags --libs x11` $in--output $out
 
-build README.md: ronn2md man/wintoggle.1.ronn
+rule xlibcc
+    command = cc $ccflags $in -lX11 --output $out
 
 build man/wintoggle.1: ronn2troff man/wintoggle.1.ronn
 
-build wintoggle: cc wintoggle.c
+build wintoggle: xlibcc wintoggle.c
 
 default wintoggle README.md man/wintoggle.1

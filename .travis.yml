@@ -1,0 +1,11 @@
+language: c
+
+before_install:
+  - sudo apt-get install ninja-build
+
+compiler:
+  - clang
+  - gcc
+
+script:
+  - ninja wintoggle
