@@ -284,7 +284,7 @@ wt_active_window_info(Display* display, char** class_name_return)
 }
 
 WTParamsStatus
-wt_params_populate(int arg_count, const char** args, WTParams* params)
+wt_params_populate(size_t arg_count, const char** args, WTParams* params)
 {
     WTParams result; // Use a working copy and copy it to <params> only on success
     memset(&result, 0, sizeof(result));
@@ -380,7 +380,7 @@ main(int argc, const char** argv)
         // The initial implementation compared the active window class name with the class_name param
         // but sometimes, after closing the last window, OpenBox did not update _NET_SHOWING_DESKTOP
         // but left the root window with an invalid _NET_ACTIVE_WINDOW.
-        if (match.window > 0 && match.window == active_window_id)
+        if (match.window > 0 && match.window == (unsigned long)active_window_id)
         {
             WTWindowInfo active_info = wt_active_window_info(display, &class_name_buffer);
             printf("[Step 1] Minimizing window %lu (%s).\n", active_info.window, active_info.class_name);
