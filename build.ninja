@@ -6,14 +6,15 @@ rule ronn2md
 rule ronn2troff
     command = cat $in | ronn --pipe --roff > $out
 
-rule xlibcc
-    command = cc $ccflags `pkg-config --cflags --libs x11` $in--output $out
+rule concat
+    command = cat $in > $out
 
 rule xlibcc
     command = cc $ccflags $in -lX11 --output $out
 
 build man/wintoggle.1: ronn2troff man/wintoggle.1.ronn
-
+build man/wintoggle.md: ronn2md man/wintoggle.1.ronn
+build README.md: concat badges.md man/wintoggle.1.md
 build wintoggle: xlibcc wintoggle.c
 
 default wintoggle README.md man/wintoggle.1
