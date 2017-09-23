@@ -1,7 +1,7 @@
 .PHONY: all
 
 wintoggle: wintoggle.c
-	cc -std=c99 -O3 -Wall -Wextra -lX11 --output wintoggle wintoggle.c
+	gcc -std=c99 -fuse-ld=gold -O3 -Wall -Wextra -lX11 --output wintoggle wintoggle.c
 
 man/wintoggle.1: man/wintoggle.1.ronn
 	ronn --roff man/wintoggle.1.ronn
