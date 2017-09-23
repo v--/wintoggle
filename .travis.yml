@@ -6,3 +6,8 @@ compiler:
 
 script:
   - make wintoggle
+
+addons:
+  apt:
+    packages:
+    - libx11-dev
